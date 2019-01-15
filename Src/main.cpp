@@ -54,7 +54,8 @@ extern "C" {
 volatile uint16_t systick_cnt;
 volatile uint32_t len_bag;  // обнулить при запуске программы
 #include <Modbus.h>
-#include "queue"
+#include <queue>
+#include <Flashmem.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -136,6 +137,8 @@ int main(void)
 	queue_init(&recive_buff_c);
 	len_bag = 0;
 	Modbus modbus = Modbus(USART1, (uint8_t)RS485_MY_ID, MODE_SLAVE, &rs485_transmit);
+	Flashmem flashmem = Flashmem(31);
+	uint8_t *res = flashmem.test_write((uint8_t *)"Hellow flash mem\0", 17);
 	modbus.run_all_test();
 	/* USER CODE END 2 */
 
