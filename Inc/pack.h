@@ -61,6 +61,7 @@ __STATIC_INLINE void wait_transmission_complite(USART_TypeDef *USARTx){
 
 __STATIC_INLINE void rs485_prepare_transmit(USART_TypeDef *USARTx){
 	wait_transmission_complite(USARTx);
+	delay_ms(2);
 	LL_USART_DisableIT_RXNE(USART1);
 	LL_GPIO_SetOutputPin(USART_DE_GPIO_Port, USART_DE_Pin);
 }
