@@ -25,6 +25,7 @@ Flashmem::~Flashmem() {
 }
 
 void Flashmem::flash_mem_write(uint8_t *data, uint32_t address, uint32_t count) {
+	// Todo - ƒописать проверку на выход за пределы страницы
 	this->unlock_flash();
 	this->flash_mem_erase(this->main_mem_start);
 	uint32_t i;

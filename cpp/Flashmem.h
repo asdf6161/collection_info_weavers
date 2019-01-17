@@ -6,6 +6,10 @@
  *  have code - https://habr.com/ru/post/213771/
  */
 
+/*Example
+ * uint8_t *res = flashmem.test_write((uint8_t *)"Hellow flash mem\0", 17);
+ * */
+
 #ifndef FLASHMEM_H_
 #define FLASHMEM_H_
 

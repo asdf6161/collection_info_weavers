@@ -138,7 +138,6 @@ int main(void)
 	len_bag = 0;
 	Modbus modbus = Modbus(USART1, (uint8_t)RS485_MY_ID, MODE_SLAVE, &rs485_transmit);
 	Flashmem flashmem = Flashmem(31);
-	uint8_t *res = flashmem.test_write((uint8_t *)"Hellow flash mem\0", 17);
 	modbus.run_all_test();
 	/* USER CODE END 2 */
 
@@ -146,7 +145,6 @@ int main(void)
 	/* USER CODE BEGIN WHILE */
 	while (1)
 	{
-
 		modbus.recv(&recive_buff_c);
 		//check_recive_data(&recive_buff);
 		/* USER CODE END WHILE */
