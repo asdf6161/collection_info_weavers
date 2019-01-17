@@ -35,7 +35,8 @@ enum modbus_func_enum {
 	FUNC_LENGTH,  // Длинна полотна
 	FUNC_ANS,     // Используется для ответа Хранит код ошибки
 	FUNC_SET_REG, // Функция установки регистра
-	FUNC_CLEAR_LENGTH,
+	FUNC_CLEAR_LENGTH,  // Очистка регистра длинны
+	FUNC_GET_ERROR,  	// Отправка регистра с последней ошибкой
 };
 
 // Хранит номер регистра в массиве регистров REG_TYPE *reg

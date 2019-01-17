@@ -70,7 +70,6 @@ void Modbus::recv(c_queue *q){
 				this->answer(FUNC_LENGTH);
 			} else {
 				this->reg[REG_ANS_CODE] = ANS_CODE_CRC_ERR;
-				this->answer(FUNC_ANS);
 			}
 			break;
 		}
@@ -80,14 +79,19 @@ void Modbus::recv(c_queue *q){
 				this->answer(FUNC_ANS);
 			} else {
 				this->reg[REG_ANS_CODE] = ANS_CODE_CRC_ERR;
-				this->answer(FUNC_ANS);
 			}
 
 			break;
 		}
+		case FUNC_GET_ERROR: {
+			if (check_crc(q, FUNC_GET_ERROR)){
+				this->answer(FUNC_ANS);
+			}
+			break;
+		}
 		default: {
-			this->reg[REG_ANS_CODE] = ANS_CODE_NOT_HAVE_FUNC_ERR;
-			this->answer(FUNC_ANS);
+//			this->reg[REG_ANS_CODE] = ANS_CODE_NOT_HAVE_FUNC_ERR;
+//			this->answer(FUNC_ANS);
 			break;
 		}
 	}
@@ -167,10 +171,12 @@ std::string Modbus::build_packet_str(const modbus_func_enum func){
 			break;
 		}
 		case FUNC_ANS: {
+			// Формат {ID;, FUNC;, REG_ANS;, CRC;}
 			str += std::to_string(this->reg[REG_ANS_CODE]) + ';';
 			break;
 		}
 		case FUNC_SET_REG: {
+			// Формат {ID;, FUNC;, REG_ANS;, CRC;}
 			str += std::to_string(this->reg[REG_SET]) + ';';
 			break;
 		}
@@ -213,7 +219,7 @@ std::vector<uint8_t> Modbus::build_packet(const modbus_func_enum func){
 
 	uint16_t crc = CRC_16(vc.data(), vc.size());
 	vc.push_back((uint8_t)crc);
-	vc.push_back((uint8_t)crc >> 8);
+	vc.push_back((uint8_t)(crc >> 8));
 
 	return vc;
 }
