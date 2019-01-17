@@ -8,6 +8,8 @@
 #include <Modbus.h>
 #include <exception>
 
+extern volatile uint32_t len_bag;
+
 Modbus::Modbus(	USART_TypeDef *usart,
 				uint8_t addr,
 				modbus_mode_enum mode,
@@ -67,6 +69,7 @@ void Modbus::recv(c_queue *q){
 	switch (queue_pop(q)) {
 		case FUNC_LENGTH: {
 			if (check_crc(q, FUNC_LENGTH)){
+				this->reg[REG_LENGTH] = len_bag;
 				this->answer(FUNC_LENGTH);
 			} else {
 				this->reg[REG_ANS_CODE] = ANS_CODE_CRC_ERR;
@@ -75,6 +78,7 @@ void Modbus::recv(c_queue *q){
 		}
 		case FUNC_CLEAR_LENGTH: {
 			if (check_crc(q, FUNC_CLEAR_LENGTH)){
+				len_bag = 0;
 				this->reg[REG_ANS_CODE] = ANS_CODE_OK;
 				this->answer(FUNC_ANS);
 			} else {
